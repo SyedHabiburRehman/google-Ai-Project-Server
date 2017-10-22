@@ -20,23 +20,25 @@ const speechClient = Speech({
 module.exports = {
     getText: (req, res, next) => {
         console.log('AUDIO URI', req.body);
-        const fileName = req.body;
+        const fileName = req.body.audioUri;
         // Reads a local audio file and converts it to base64
         const file = fs.readFileSync(fileName);
         const audioBytes = file.toString('base64');
 
-        // The audio file's encoding, sample rate in hertz, and BCP-47 language code
-        const audio = {
-            content: audioBytes
-        };
         const config = {
             encoding: 'LINEAR16',
             sampleRateHertz: 16000,
             languageCode: 'en-US'
         };
+
+        // The audio file's encoding, sample rate in hertz, and BCP-47 language code
+        const audio = {
+            content: audioBytes
+        };
+        
         const request = {
-            audio: audio,
-            config: config
+            config: config,
+            audio: audio
         };
         let text = '';
 
